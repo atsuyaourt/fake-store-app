@@ -1,0 +1,40 @@
+{
+  "name": "fake-store-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest"
+  },
+  "dependencies": {
+    "@tanstack/vue-query": "^4.34.0",
+    "axios": "^1.5.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "vuetify": "^3.3.15"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.54",
+    "@types/node": "18",
+    "@unocss/preset-icons": "^0.55.4",
+    "@unocss/preset-wind": "^0.55.4",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/test-utils": "^2.4.1",
+    "eslint": "^8.48.0",
+    "jsdom": "^22.1.0",
+    "prettier": "^3.0.3",
+    "resize-observer-polyfill": "^1.5.1",
+    "typescript": "^5.1.6",
+    "unocss": "^0.55.4",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
+    "unplugin-vue-router": "^0.6.4",
+    "vite": "^4.4.5",
+    "vitest": "^0.34.3",
+    "vue-tsc": "^1.8.5"
+  },
+  "packageManager": "yarn@3.6.3"
+}
