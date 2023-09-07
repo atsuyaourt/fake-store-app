@@ -7,6 +7,7 @@ import Vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import VueRouter from 'unplugin-vue-router/vite'
+import Layouts from 'vite-plugin-vue-layouts'
 
 import Unocss from 'unocss/vite'
 
@@ -16,14 +17,18 @@ export default defineConfig({
   plugins: [
     VueRouter({ dts: 'src/typed-router.d.ts' }),
     Vue(),
+    Layouts({
+      defaultLayout: 'default',
+      layoutsDirs: 'src/layouts',
+    }),
     Unocss(),
     AutoImport({
       imports: [
         'vue',
         VueRouterAutoImports,
         {
-          '@tanstack/vue-query': ['useQuery'],
           axios: [['default', 'axios']],
+          '@tanstack/vue-query': ['useQuery', 'useMutation'],
         },
       ],
       dts: 'src/auto-imports.d.ts',

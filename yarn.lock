@@ -936,7 +936,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:*, @vue/compiler-sfc@npm:3.3.4, @vue/compiler-sfc@npm:^3.3.4":
+"@vue/compiler-sfc@npm:*, @vue/compiler-sfc@npm:3.3.4, @vue/compiler-sfc@npm:^3.2.31, @vue/compiler-sfc@npm:^3.3.4":
   version: 3.3.4
   resolution: "@vue/compiler-sfc@npm:3.3.4"
   dependencies:
@@ -1962,6 +1962,7 @@ __metadata:
     unplugin-vue-components: ^0.25.2
     unplugin-vue-router: ^0.6.4
     vite: ^4.4.5
+    vite-plugin-vue-layouts: ^0.8.0
     vitest: ^0.34.3
     vue: ^3.3.4
     vue-router: ^4.2.4
@@ -1977,7 +1978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.1":
+"fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.12, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.1":
   version: 3.3.1
   resolution: "fast-glob@npm:3.3.1"
   dependencies:
@@ -4078,6 +4079,21 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 366c4f3fb7c038e2180abc6b18cfbac3b8684cd878eaf7ebf1ffb07d95d2ea325713fc575a7949a13bb00cfe264acbc28c02e2836b8647e1f443fe631c17805a
+  languageName: node
+  linkType: hard
+
+"vite-plugin-vue-layouts@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "vite-plugin-vue-layouts@npm:0.8.0"
+  dependencies:
+    "@vue/compiler-sfc": ^3.2.31
+    debug: ^4.3.3
+    fast-glob: ^3.2.11
+  peerDependencies:
+    vite: ^2.5.0 || ^3.0.0-0 || ^4.0.0
+    vue: ^2.6.12 || ^3.2.4
+    vue-router: ^3.5.1 || ^4.0.11
+  checksum: bd32a273eb7425b86e73872681a92d44bd0f64484746039b3ba999291486590fa5f5dd967aba057cee8df77dfaa1b38a1670cbf2a6585feb3b73dd525ce1f1d4
   languageName: node
   linkType: hard
 

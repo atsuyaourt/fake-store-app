@@ -11,6 +11,8 @@ declare module 'vue' {
     DropDown: typeof import('./components/DropDown.vue')['default']
     DropDownItems: typeof import('./components/DropDownItems.vue')['default']
     Item: typeof import('./components/Item.vue')['default']
+    NavDrawer: typeof import('./components/NavDrawer.vue')['default']
+    ProductForm: typeof import('./components/ProductForm.vue')['default']
     RangeSlider: typeof import('./components/RangeSlider.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
