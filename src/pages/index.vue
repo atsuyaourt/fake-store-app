@@ -27,6 +27,9 @@
       </div>
     </div>
   </div>
+  <v-overlay :model-value="productStore.isLoading" class="align-center justify-center">
+    <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
+  </v-overlay>
 </template>
 
 <script setup lang="ts">
