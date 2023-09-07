@@ -1,5 +1,5 @@
 declare type Product = {
-  id: number
+  id?: number
   title: string
   price: number
   category: string

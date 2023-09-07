@@ -12,7 +12,7 @@
             <v-select
               v-model="formData.category"
               label="Category"
-              :items="categories"
+              :items="productStore.categories"
               menu-icon="i-mdi:chevron-down"
             ></v-select>
             <v-textarea v-model="formData.description" label="Description"></v-textarea>
@@ -24,7 +24,13 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="blue-darken-1" variant="text" @click="close"> Cancel </v-btn>
-      <v-btn color="blue-darken-1" variant="text" @click="save" :disabled="saveButtonDisabled" :loading="isLoading">
+      <v-btn
+        color="blue-darken-1"
+        variant="text"
+        @click="save"
+        :disabled="saveButtonDisabled"
+        :loading="productStore.isMutating"
+      >
         Save
       </v-btn>
     </v-card-actions>
@@ -39,41 +45,17 @@
 
   const formData = ref({} as Product)
 
-  const saveButtonDisabled = computed(
-    () => formData.value?.title === undefined && formData.value?.category === undefined,
-  )
+  const isEmpty = (str: string) => !str?.length
+
+  const saveButtonDisabled = computed(() => isEmpty(formData.value?.title) || isEmpty(formData.value?.category))
 
   const emit = defineEmits<{
     close: []
-    created: [data: Product]
-    updated: [data: Product]
+    ok: [type: 'updated' | 'created']
   }>()
 
-  const getCategories = async () => {
-    const url = 'https://fakestoreapi.com/products/categories'
-    const { data } = await axios.get(url)
-    return data
-  }
-
-  const addOrEditProduct = async (product: Product) => {
-    const urlID = product.id ? `/${product.id}` : ''
-    const url = `https://fakestoreapi.com/products${urlID}`
-    const { data } = await axios(url, { method: product.id ? 'PUT' : 'POST', data: product })
-    return data
-  }
-
-  const { data: categories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories,
-  })
-
-  const { mutate, isLoading } = useMutation({
-    mutationKey: ['products', formData.value.id ? formData.value.id : 'new'],
-    mutationFn: addOrEditProduct,
-    onSuccess: (data: Product) => {
-      formData?.value?.id ? emit('updated', data) : emit('created', data)
-    },
-  })
+  const productStore = useProductStore()
+  const { isMutated } = storeToRefs(productStore)
 
   const formTitle = computed(() => (formData?.value?.id ? 'Edit Item' : 'New Item'))
 
@@ -83,8 +65,14 @@
   }
 
   const save = () => {
-    mutate(formData.value)
+    productStore.createOrUpdateProduct(formData.value)
   }
+
+  watch(isMutated, (isMut) => {
+    if (isMut) {
+      emit('ok', formData.value.id ? 'updated' : 'created')
+    }
+  })
 
   onMounted(() => {
     formData.value = data?.value

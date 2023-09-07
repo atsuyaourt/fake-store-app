@@ -6,6 +6,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import { VueQueryPlugin } from '@tanstack/vue-query'
+
+import { createPinia } from 'pinia'
+
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router/auto'
 
@@ -14,6 +17,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+
+const pinia = createPinia()
 
 const vuetify = createVuetify({
   components: { ...components, VSkeletonLoader, VDataTable },
@@ -39,6 +44,7 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
+app.use(pinia)
 app.use(vuetify)
 app.use(VueQueryPlugin)
 app.mount('#app')

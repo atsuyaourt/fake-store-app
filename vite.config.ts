@@ -29,10 +29,11 @@ export default defineConfig({
         {
           axios: [['default', 'axios']],
           '@tanstack/vue-query': ['useQuery', 'useMutation'],
+          pinia: ['defineStore', 'storeToRefs'],
         },
       ],
       dts: 'src/auto-imports.d.ts',
-      dirs: ['src/composables'],
+      dirs: ['src/composables', 'src/stores'],
       vueTemplate: true,
     }),
     Components({

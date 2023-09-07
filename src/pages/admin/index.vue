@@ -4,8 +4,8 @@
   </v-snackbar>
   <v-data-table
     :headers="headers"
-    :items="products"
-    :loading="isLoading"
+    :items="productStore.products"
+    :loading="productStore.isLoading"
     first-icon="i-mdi:chevron-double-left"
     prev-icon="i-mdi:chevron-left"
     next-icon="i-mdi:chevron-right"
@@ -22,12 +22,7 @@
           <template v-slot:activator="{ props }">
             <v-btn color="primary" dark class="mb-2" v-bind="props"> New Item </v-btn>
           </template>
-          <product-form
-            :data="activeProduct"
-            @close="handleClose"
-            @created="handleCreateSuccess($event)"
-            @updated="handleUpdateSuccess($event)"
-          />
+          <product-form :data="activeProduct" @close="handleClose" @ok="handleFormSuccess($event)" />
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
@@ -35,7 +30,11 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue-darken-1" variant="text" @click="handleClose">Cancel</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="handleDeleteItemConfirm" :loading="isDeleting"
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="handleDeleteItemConfirm"
+                :loading="productStore.isDeleting"
                 >OK</v-btn
               >
               <v-spacer></v-spacer>
@@ -53,40 +52,10 @@
 </template>
 
 <script setup lang="ts">
-  const products = ref([] as Product[])
+  const productStore = useProductStore()
   const activeProduct = ref({} as Product)
 
-  const getProducts = async () => {
-    const url = 'https://fakestoreapi.com/products'
-    const { data } = await axios.get(url)
-
-    products.value = data
-    return data as Product[]
-  }
-
-  const delProduct = async (delID: number) => {
-    const url = `https://fakestoreapi.com/products/${delID}`
-    const { data } = await axios.delete(url)
-
-    products.value = products.value.filter(({ id }) => id !== delID)
-    return data as Product
-  }
-
-  const { isLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: getProducts,
-  })
-
-  const { mutate, isLoading: isDeleting } = useMutation({
-    mutationKey: ['products', 'del'],
-    mutationFn: delProduct,
-    onSuccess: () => {
-      snackBarOpts.text = 'Item deleted'
-      snackBarOpts.color = 'error'
-      snackbar.value = true
-      handleClose()
-    },
-  })
+  const { isDeleted } = storeToRefs(productStore)
 
   const headers = [
     {
@@ -126,30 +95,25 @@
     dialogDelete.value = false
   }
 
-  const handleCreateSuccess = (newProduct: Product) => {
-    products.value = [...products.value, newProduct]
-    snackBarOpts.text = 'New item added'
-    snackBarOpts.color = 'success'
-    snackbar.value = true
-    handleClose()
-  }
-
-  const handleUpdateSuccess = (updatedProduct: Product) => {
-    products.value = products.value.map((p) => {
-      if (p.id === updatedProduct.id) {
-        return updatedProduct
-      }
-      return p
-    })
-    snackBarOpts.text = 'Item updated'
+  const handleFormSuccess = (type: 'updated' | 'created') => {
+    snackBarOpts.text = type === 'created' ? 'New item added' : 'Item updated'
     snackBarOpts.color = 'success'
     snackbar.value = true
     handleClose()
   }
 
   const handleDeleteItemConfirm = () => {
-    mutate(activeProduct.value.id)
+    productStore.deleteProduct(activeProduct.value?.id ?? 0)
   }
+
+  watch(isDeleted, (isDel) => {
+    if (isDel) {
+      snackBarOpts.text = 'Item deleted'
+      snackBarOpts.color = 'error'
+      snackbar.value = true
+      handleClose()
+    }
+  })
 </script>
 
 <route lang="yaml">
